@@ -1,0 +1,47 @@
+$background: #fbfbfb;
+$green-piss: #d5e20f;
+$grey:#898989;
+$greyOpacity:rgba(137, 137, 137, 0.5);
+
+$grey2:#4a4a4a;
+$grey2Opacity:rgba(74, 74, 74, 0.7);
+$grey8Opacity:rgba(74, 74, 74, 0.2);
+
+$primary-color: $green-piss;
+$link-not-available: $grey;
+$link-color: #000;
+
+$stepper-background-passive-color: $grey;
+$stepper-background-active-color: $green-piss;
+
+$contracts-signup-hover-color:$grey2Opacity;
+$contracts-signup-hover-icon-color:$grey;
+
+$tooltip-light: $grey8Opacity;
+$tooltip-dark: $grey;
+
+/* colors for ICO */
+
+$greyDark: #424a52;
+$greyMiddle: #686e75;
+$greyAnother: #b3b7ba;
+$greyLight: #D8DADB;
+$greyAnother: #7b7f85;
+$greyNoIdea: #4a4a4a;
+
+$greenNeufund: #d5e20f;
+$yellow: #eff49f;
+
+$ico-dark-background-color: $greyDark;
+$ico-header-icons-color:$greyLight;
+
+$ico-header-kyc-progress-background-color: $greyLight;
+$ico-header-kyc-fail-background-color: #fff;
+
+$ico-logout-color: #fff;
+$ico-top-area-text-color: $greyAnother;
+$ico-top-area-text-darker-color: $greyMiddle;
+
+$ico-bank-reference-background-color: $yellow
+
+

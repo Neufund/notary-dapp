@@ -1,0 +1,15 @@
+@import "../styles/dimensions";
+
+.App-content {
+  box-sizing: border-box;
+  min-height: calc(100vh - #{$header-height} - #{$footer-height});
+  padding-bottom: $footer-height;
+}
+
+.footer-wrapper {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
+  z-index: 999;
+}
