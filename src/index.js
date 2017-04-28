@@ -10,6 +10,12 @@ import App from './app/App.js';
 import Login from './app/Login.js';
 import Logout from './app/Logout.js';
 import Contracts from './app/Contracts.js';
+import Main from './app/main.js';
+import Activate from './app/Activate.js';
+import deprecate from './app/deprecate.js';
+
+
+
 
 import './index.scss';
 import 'flexboxgrid'
@@ -45,10 +51,13 @@ import reducers from './reducers';
             <Provider store={store}>
                 <Router history={syncedHistory}>
                     <Route component={App}>
-                        <Route path="/" component={Login}/>
+                        <Route path="/" component={Main}/>
                         <Route path="/login" component={Login}/>
                         <Route path="/contracts" component={Contracts}/>
                         <Route path="/logout" component={Logout}/>
+                        <Route path="/Activate" component={Activate}/>
+                          <Route path="/deprecate" component={deprecate}/>
+
                     </Route>
                 </Router>
             </Provider>

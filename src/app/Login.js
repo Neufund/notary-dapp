@@ -16,7 +16,6 @@ import cms from '../cms';
 
 const ANIMATION_DURATION = 3000;
 const CHECK_INTERVAL = 500;
-
 class Login extends React.Component {
     constructor() {
         super();
@@ -60,9 +59,11 @@ class Login extends React.Component {
     async getAccount() {
         ledgerLoginProvider.stop();
         try {
-            let accounts = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
+            window.accounts = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
             console.log(accounts);
-            web3.eth.defaultAccount = accounts[0];
+            let test = await toPromise(window.web3.eth.getAccounts);
+            console.log(test);
+            console.log('test me ');
             if (this.askForAccountConfirmation) {
                 await toPromiseNoError(this.setState.bind(this), {completed: true, accounts});
             } else {
@@ -93,7 +94,7 @@ class Login extends React.Component {
 
     async fetchUserData() {
         //TODO
-        await wait(ANIMATION_DURATION);
+    //    await wait(ANIMATION_DURATION);
         this.onUserDataFetched();
     }
 
@@ -237,10 +238,9 @@ class Login extends React.Component {
 
         return cms(__filename)(
             <div className="App-content">
-                <Headline text="Log in"/>
+                <Headline text="Register Nano"/>
                 <div className="secondary-info">
-                    Log in with Nano Ledger or <Link to="">Log in with email</Link> <span onClick={this.toggleTutorial}
-                                                                                          className="TutorialSwitch">{tutorialText}</span>
+                    Register Nano Ledger for the first time
                 </div>
                 {step}
             </div>

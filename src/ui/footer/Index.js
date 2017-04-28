@@ -6,7 +6,7 @@ export default () => {
     return cms(__filename)(
         <div className="Footer">
             <div>
-                Contact: <a href="mailto:hello@neufund.org">hello@neufund.org</a>
+                Contact: <a href="mailto:support@neufund.org">support@neufund.org</a>
             </div>
             <div>
                 ©NEUFUND
