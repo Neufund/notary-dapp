@@ -16,7 +16,7 @@ export default () => {
                         If you want to log in connect the Ledger again
                     </p>
                     <Link to="/login">
-                        <img src={Image} alt="dummy something"/>
+                        <img src={Image} alt="dummy something" width="350"/>
                         Log in again
                     </Link>
                 </div>

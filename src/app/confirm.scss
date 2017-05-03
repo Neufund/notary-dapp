@@ -1,0 +1,13 @@
+.Contracts {
+  .column {
+    float: left;
+  }
+}
+
+.leftColumn {
+  width: calc(80vw / 3);
+}
+
+.rightColumn {
+  width: calc(80vw * 2 / 3);
+}

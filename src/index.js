@@ -13,7 +13,7 @@ import Contracts from './app/Contracts.js';
 import Main from './app/main.js';
 import Activate from './app/Activate.js';
 import deprecate from './app/deprecate.js';
-
+import Confirm from './app/confirm.js'
 
 
 
@@ -56,7 +56,8 @@ import reducers from './reducers';
                         <Route path="/contracts" component={Contracts}/>
                         <Route path="/logout" component={Logout}/>
                         <Route path="/Activate" component={Activate}/>
-                          <Route path="/deprecate" component={deprecate}/>
+                        <Route path="/confirm" component={Confirm}/>
+                        <Route path="/deprecate" component={deprecate}/>
 
                     </Route>
                 </Router>

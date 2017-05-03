@@ -4,7 +4,7 @@ import Headline from '../ui/Headline';
 import './Contracts.scss';
 import cms from '../cms';
 
-import {grey900, lime500} from 'material-ui/styles/colors';
+import {grey900, grey50} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -14,7 +14,7 @@ import {contract} from '../web3';
 import history from '../history';
 
 
-const styles = {
+window.styles = {
   errorStyle: {
     color: grey900,
   },
@@ -25,14 +25,15 @@ const styles = {
     color: grey900,
   },
   floatingLabelFocusStyle: {
-    color: lime500,
+    color: grey50,
   },
 };
 //Styles for buttons
-const style = {
-  backgroundColor: grey900,
+window.style = {
+  backgroundColor: grey50,
   margin: 12,
 };
+
 
 class Transfer extends React.Component {
   constructor(props) {
@@ -42,10 +43,15 @@ class Transfer extends React.Component {
 
   }
   handleRegister(event) {
+    window.mode = 1;
       history.push("/Login");
   }
   handleActivate(event) {
       history.push("/Activate");
+  }
+  handleConfirm(event) {
+    window.mode = 2;
+      history.push("/Login");
   }
   handleDeprecate(event) {
       history.push("/deprecate");
@@ -53,10 +59,10 @@ class Transfer extends React.Component {
   render() {
     return (
       <div>
-          <RaisedButton label="Register" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
-            <RaisedButton label="Activate" primary={true} style={style} backgroundColor={lime500} onClick={this.handleActivate} />
-              <RaisedButton label="Deprecate" primary={true} style={style} backgroundColor={lime500} onClick={this.handleDeprecate} />
-
+          <RaisedButton label="Register"  style={style} backgroundColor={grey50} onClick={this.handleRegister} />
+            <RaisedButton label="Activate"  style={style} backgroundColor={grey50} onClick={this.handleActivate} />
+              <RaisedButton label="Deprecate"  style={style} backgroundColor={grey50} onClick={this.handleDeprecate} />
+                <RaisedButton label="Confirm"  style={style} backgroundColor={grey50} onClick={this.handleConfirm} />
       </div>
     );
   }

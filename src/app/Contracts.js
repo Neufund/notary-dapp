@@ -13,35 +13,13 @@ import {contract} from '../web3';
 
 import history from '../history';
 
-
-const styles = {
-  errorStyle: {
-    color: grey900,
-  },
-  underlineStyle: {
-    borderColor: grey900,
-  },
-  floatingLabelStyle: {
-    color: grey900,
-  },
-  floatingLabelFocusStyle: {
-    color: lime500,
-  },
-};
-//Styles for buttons
-const style = {
-  backgroundColor: grey900,
-  margin: 12,
-};
-
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {User: '', Amount: ''};
+    this.state = { Amount: ''};
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
-
   }
   //amount form
   handleIDChange(event) {
@@ -51,7 +29,7 @@ class Transfer extends React.Component {
   handleRegister(event) {
 
     let amount = this.state.Amount;
-    let addrs = this.state.User;
+    let addrs = window.accounts[0];
     //Input checks (More research regarding javascripts security methods to be doen)
   /*  if(amount.match(/^[0-9A-Fa-fxX]+$/) == null
        || addrs.match(/^[0-9A-Fa-fxX]+$/) == null
@@ -67,7 +45,7 @@ class Transfer extends React.Component {
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
         console.log(instance);
-  return instance.registerNano('0x1078291bbcc539f51559f14bc57d1575d3801df8',amount);
+  return instance.registerNano(addrs,amount);
 
 }).then(function(suc) {
         console.log(suc);
@@ -77,7 +55,7 @@ class Transfer extends React.Component {
   console.log(err);
   alert("NANO ALREADY REGISTERED!")
   history.push("/");
-      //  window.location.reload();
+        window.location.reload();
 
 });
 
@@ -99,7 +77,7 @@ class Transfer extends React.Component {
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Amount} onChange={this.handleIDChange}/>
         </form>
-          <RaisedButton label="Deposit" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
+          <RaisedButton label="Deposit"  style={window.style} onClick={this.handleRegister} />
       </div>
     );
   }
