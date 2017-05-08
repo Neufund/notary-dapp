@@ -13,11 +13,10 @@ import {contract} from '../web3';
 
 import history from '../history';
 
-
-class Transfer extends React.Component {
+class Activate extends React.Component {
   constructor(props) {
-    super(props);
-
+    super(props)
+    console.log(this.props);
     this.state = {Owner: '', Device: ''};
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleOwnerChange = this.handleOwnerChange.bind(this);
@@ -36,18 +35,6 @@ class Transfer extends React.Component {
 
     let Device = this.state.Device;
     let Owner = this.state.Owner;
-    //Input checks (More research regarding javascripts security methods to be doen)
-  /*  if(amount.match(/^[0-9A-Fa-fxX]+$/) == null
-       || addrs.match(/^[0-9A-Fa-fxX]+$/) == null
-        || amount === ''
-         || addrs === '') {
-
-       alert("Wrong input");
-       //Only amount is emptied because its annoying to rewrite the full adress again
-       this.setState({Device: ''});
-       return;
-     }*/
-     //console.log(window.accounts[0]);
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
         return instance.activateNano(Device,Owner);
@@ -75,6 +62,7 @@ class Transfer extends React.Component {
   render() {
     return (
       <div>
+        {console.log(this.props)}
         <img  src={nano2} alt="nano2"  width="350"/>
         <div className="secondary-info">Serial number is engraved Number</div>
         <form>
@@ -101,7 +89,7 @@ export default () => {
         <div className="App-content">
             <Headline text="Welcome Mr.Notary man"/>
             <div className="secondary-info">Please enter the Nano serial Number</div>
-            <Transfer/>
+            <Activate/>
 
                 </div>
     );

@@ -14,11 +14,13 @@ import nano3 from '../images/nano3.png';
 import placeholder from '../images/pitching-i-phone-app-startup.jpg';
 import cms from '../cms';
 
-const ANIMATION_DURATION = 3000;
-const CHECK_INTERVAL = 500;
+
 class Login extends React.Component {
     constructor() {
         super();
+        if(window.mode === undefined)
+        history.push("/");
+
         this.askForAccountConfirmation = true;
         this.state = {
             completed: false,
@@ -31,7 +33,9 @@ class Login extends React.Component {
             accounts: null
         };
     }
-
+    async test() {
+      console.log("this is a callback");
+    }
     async componentDidMount() {
         await toPromiseNoError(this.setState.bind(this), {"browserSupported": ledger.isU2FSupported});
         await ledgerLoginProvider.waitUntilConnected();
@@ -49,7 +53,6 @@ class Login extends React.Component {
 
     async onLedgerConnected() {
         await toPromiseNoError(this.setState.bind(this), {completed: true, step: 1});
-        await wait(ANIMATION_DURATION);
         if (this.askForAccountConfirmation) {
             await toPromiseNoError(this.setState.bind(this), {completed: false, step: 2});
         }
@@ -61,7 +64,7 @@ class Login extends React.Component {
         ledgerLoginProvider.stop();
         try {
             window.accounts = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
-          //   let help = await toPromise(ledger.signTransaction, [], []);
+          //   let help = await toPromise(ledger.signTransaction, [],[]);
 
           //  console.log(help);
             let test = await toPromise(window.web3.eth.getAccounts);
