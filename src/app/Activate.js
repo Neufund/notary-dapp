@@ -17,7 +17,7 @@ class Activate extends React.Component {
   constructor(props) {
     super(props)
     console.log(this.props);
-    this.state = {Owner: '', Device: ''};
+    this.state = {Owner: '', Device: window.deviceID};
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleOwnerChange = this.handleOwnerChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);

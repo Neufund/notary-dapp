@@ -9,10 +9,13 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 
 import {grey900, grey50} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import IconButton from 'material-ui/IconButton';
 import ActionHome from 'material-ui/svg-icons/action/home';
+import Delete from 'material-ui/svg-icons/action/delete';
+import Add from 'material-ui/svg-icons/content/add';
 
 import nano2 from '../images/nano2.png';
 import {contract} from '../web3';
@@ -49,13 +52,13 @@ window.style = {
 function handleDeprecate(dev) {
   window.deviceID=dev;
   console.log(dev);
-    history.push("/deprecate");
+    history.push("/activate");
 }
 
 function touchme(props){
   if(props.owner===0)
-  return <IconButton onClick={() => handleDeprecate(props.id)}><ActionHome /></IconButton>;
-  return props.owner.toString();
+  return <IconButton onClick={() => handleDeprecate(props.id)}><Add /></IconButton>;
+  return props.owner;
 }
 
 class Transfer extends React.Component {
@@ -108,10 +111,11 @@ class Transfer extends React.Component {
       .map(result => result.args.deviceId.c[0])
       .map(async function(id) {
         const NanoData = await instance.nanoStates.call(id);
+        console.log(NanoData);
         return({
           id: NanoData[0].c[0],
           Pubkey: NanoData[1].toString(),
-          OnwerID: NanoData[2].c[0],
+          OwnerID: NanoData[2].c[0],
           confirmed: NanoData[3].toString(),
           deprecated: await instance.isDeprecated.call(id)
       })}
@@ -124,8 +128,7 @@ class Transfer extends React.Component {
   render() {
     return (
       <div>
-          <RaisedButton label="Register"  style={style} backgroundColor={grey50} onClick={this.handleRegister} />
-            <RaisedButton label="Activate"  style={style} backgroundColor={grey50} onClick={this.handleActivate} />
+      <IconButton onClick={() => this.handleRegister()}><Add /></IconButton>
                       <Table>
                      <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                       <TableRow >
@@ -141,9 +144,9 @@ class Transfer extends React.Component {
                            <TableRow key={device.id}>
                                   <TableRowColumn width={25}>{device.id}</TableRowColumn>
                                   <TableRowColumn width={300}>{device.Pubkey}</TableRowColumn>
-                                  <TableRowColumn>{touchme({owner:0,id: device.id})} </TableRowColumn>
+                                  <TableRowColumn>{touchme({owner:device.OwnerID,id: device.id})} </TableRowColumn>
                                   <TableRowColumn >{device.confirmed}</TableRowColumn>
-                                  <TableRowColumn><IconButton onClick={() => this.handleDeprecate(device.id)}><ActionHome /></IconButton></TableRowColumn>
+                                  <TableRowColumn><IconButton onClick={() => this.handleDeprecate(device.id)}><Delete /></IconButton></TableRowColumn>
                                 </TableRow>
                         )}
                       </TableBody>
