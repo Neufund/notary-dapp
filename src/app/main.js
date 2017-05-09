@@ -1,5 +1,4 @@
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import { grey900, grey50 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Add from 'material-ui/svg-icons/content/add';
@@ -16,33 +15,14 @@ import history from '../history';
 
 let TransPromise;
 
-window.styles = {
-  errorStyle: {
-    color: grey900,
-  },
-  underlineStyle: {
-    borderColor: grey900,
-  },
-  floatingLabelStyle: {
-    color: grey900,
-  },
-  floatingLabelFocusStyle: {
-    color: grey50,
-  },
-};
-window.style = {
-  backgroundColor: grey900,
-  margin: 12,
-};
-
 function handleDeprecate(dev) {
-  window.deviceID = dev;
-  console.log(dev);
   history.push('/activate');
 }
 
 function touchme(props) {
-  if (props.owner == 0) { return <IconButton onClick={() => handleDeprecate(props.id)}><Add /></IconButton>; }
+  if (props.owner == 0) {
+    return <IconButton onClick={() => handleDeprecate(props.id)}><Add /></IconButton>;
+  }
   return props.owner;
 }
 
@@ -89,14 +69,12 @@ class Transfer extends React.Component {
   }
 
   handleRegister() {
-    window.mode = 1;
     history.push('/Register');
   }
   handleActivate() {
     history.push('/Activate');
   }
   handleConfirm() {
-    window.mode = 2;
     history.push('/Login');
   }
   handleDeprecate(dev) {
@@ -139,9 +117,15 @@ class Transfer extends React.Component {
               <TableRow key={device.id}>
                 <TableRowColumn width={25}>{device.id}</TableRowColumn>
                 <TableRowColumn width={300}>{device.Pubkey}</TableRowColumn>
-                <TableRowColumn>{touchme({ owner: device.OwnerID, id: device.id })} </TableRowColumn>
+                <TableRowColumn>
+                  {touchme({ owner: device.OwnerID, id: device.id })}
+                </TableRowColumn>
                 <TableRowColumn >{device.confirmed}</TableRowColumn>
-                <TableRowColumn><IconButton onClick={() => this.handleDeprecate(device.id)}><Delete /></IconButton></TableRowColumn>
+                <TableRowColumn>
+                  <IconButton onClick={() => this.handleDeprecate(device.id)}>
+                    <Delete />
+                  </IconButton>
+                </TableRowColumn>
               </TableRow>,
                         )}
           </TableBody>
