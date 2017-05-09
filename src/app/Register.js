@@ -1,12 +1,15 @@
 import React from 'react';
 import ProgressBar from '../ui/ProgressBar';
 import Headline from '../ui/Headline';
-import './Contracts.scss';
+import './Register.scss';
 import cms from '../cms';
 
 import {grey900, lime500} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Add from 'material-ui/svg-icons/content/add';
+import IconButton from 'material-ui/IconButton';
+
 
 import nano2 from '../images/nano2.png';
 import {contract} from '../web3';
@@ -61,9 +64,6 @@ class Transfer extends React.Component {
       ledgerLoginProvider.stop();
       try {
           window.accounts = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
-          let test = await toPromise(window.web3.eth.getAccounts);
-          console.log(test);
-          console.log('test me ');
           if (this.askForAccountConfirmation) {
               await toPromiseNoError(this.setState.bind(this), {completed: true, accounts});
           } else {
@@ -72,8 +72,6 @@ class Transfer extends React.Component {
         //  this.onAccountConfirmed() START FROM HERE!!
       } catch (error) {
           console.log(error);
-          this.countdown.reset();
-          this.timeoutId = setTimeout(this.getAccount.bind(this), CHECK_INTERVAL);
       }
       ledgerLoginProvider.start();
   }
@@ -95,13 +93,9 @@ class Transfer extends React.Component {
 }).then(function(suc) {
         console.log(suc);
         history.push("/");
-      //  to be removed after hot reloading is enabled
 }).catch(function(err){
   console.log(err);
-  alert("NANO ALREADY REGISTERED!")
   history.push("/");
-        window.location.reload();
-
 });
 
     }
@@ -114,8 +108,6 @@ class Transfer extends React.Component {
   render() {
     return (
       <div>
-        <img  src={nano2} alt="nano2"  width="350"/>
-        <div className="secondary-info">Serial number is engraved Number</div>
         <form>
           <TextField
             floatingLabelText="Device ID"
@@ -123,8 +115,8 @@ class Transfer extends React.Component {
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Amount} onChange={this.handleIDChange}/>
         </form>
-          <RaisedButton label="Deposit"  style={window.style} onClick={this.handleRegister} />
-      </div>
+          <IconButton onClick={this.handleRegister}><Add /></IconButton>
+     </div>
     );
   }
 }
@@ -140,3 +132,5 @@ export default () => {
                 </div>
     );
 }
+
+//Add Browser Check handeling

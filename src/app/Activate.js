@@ -1,7 +1,6 @@
 import React from 'react';
 import ProgressBar from '../ui/ProgressBar';
 import Headline from '../ui/Headline';
-import './Contracts.scss';
 import cms from '../cms';
 
 import {grey900, grey50} from 'material-ui/styles/colors';

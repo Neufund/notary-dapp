@@ -1,7 +1,6 @@
 import React from 'react';
 import ProgressBar from '../ui/ProgressBar';
 import Headline from '../ui/Headline';
-import './Contracts.scss';
 import cms from '../cms';
 
 import {grey900, lime500} from 'material-ui/styles/colors';
@@ -23,7 +22,7 @@ class Transfer extends React.Component {
     this.handleRegister = this.handleRegister.bind(this);
     console.log(ledger);
     this.state.User = window.accounts[0];
-    
+
   }
 
   handleRegister(event) {
