@@ -20,13 +20,11 @@ class Transfer extends React.Component {
 
     this.askForAccountConfirmation = true;
     this.state = {
-      Amount: '',
-      list: '',
+      DeviceID: [],
       browserSupported: true,
-      nonNeufundLedger: false,
       oldEthereumApp: false,
-      config: null,
-      accounts: null,
+      addrs: [],
+      last: '',
     };
 
     this.handleIDChange = this.handleIDChange.bind(this);
@@ -50,7 +48,11 @@ class Transfer extends React.Component {
   async getAccount() {
     ledgerLoginProvider.stop();
     try {
-      this.state.addrs = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
+    //  const test = this.state.addrs;
+      this.setState({ addrs: (await this.state.addrs.concat(await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]))) });
+      this.setState({ addrs: (await this.state.addrs.concat(await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]))) });
+      this.setState({ last: this.state.addrs[this.state.addrs.length - 1] });
+      console.log(this.state.addrs);
       if (this.askForAccountConfirmation) {
         ledgerLoginProvider.start();
       }
@@ -61,20 +63,20 @@ class Transfer extends React.Component {
   }
 
   async handleIDChange(event) {
-    this.setState({ Amount: event.target.value });
+    this.setState({ DeviceID: event.target.value });
   }
 
   async handleRegister() {
-    const amount = this.state.Amount;
+    const amount = this.state.DeviceID;
 
     if (contract !== undefined || contract !== null) {
-      contract.deployed().then((instance) => {
-        console.log(instance);
-        return instance.registerNano(this.state.addrs, amount);
-      }).then((suc) => {
+      contract.deployed()
+      .then(instance => instance.registerNano(this.state.addrs, amount))
+      .then((suc) => {
         console.log(suc);
         history.push('/');
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
         history.push('/');
       });
@@ -83,17 +85,29 @@ class Transfer extends React.Component {
     }
   }
 
+  async handleRegister2() {
+    console.log('Its me');
+  }
+
 
   render() {
     return (
       <div>
+        {this.state.addrs.map(test => test)}
         <form>
           <TextField
+            floatingLabelText="Public key"
+            value={this.state.last}
+            style={{ width: 400 }}
+            disabled
+          />
+          <TextField
             floatingLabelText="Device ID"
-            value={this.state.Amount} onChange={this.handleIDChange}
+            value={this.state.DeviceID}
+            onChange={this.handleIDChange}
           />
         </form>
-        <IconButton onClick={this.handleRegister}><Add /></IconButton>
+        <IconButton onClick={this.handleRegister2}><Add /></IconButton>
       </div>
     );
   }
