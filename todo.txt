@@ -1,8 +1,6 @@
 Notary Dapp TODO
 
 - Remove global variables
-- Use Notary Ledger
-- Connect contracts with Web3-provider-engine
 - Clean code
 - Add the ability to add more than one key for registring
 
@@ -10,3 +8,8 @@ Notary Dapp TODO
 - Get rid of the login (OK)
 - Change the Table to add Pubkey , ownerId (ok)
 - Use Web3-provider-engine (OK)
+- Connect contracts with Web3-provider-engine (ok)
+- Use Notary Ledger
+
+
+//Issue: npm install doesn't work/ temporary solution use node_modules from a previous commit
