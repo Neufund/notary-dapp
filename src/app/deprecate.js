@@ -17,25 +17,22 @@ class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {User: '', Amount: window.deviceID};
+    this.state = {User: '', DeviceID: window.deviceID};
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
 
   }
-  //amount form
   handleIDChange(event) {
-    this.setState({Amount: event.target.value});
+    this.setState({DeviceID: event.target.value});
   }
-  //Deposit button
   handleRegister(event) {
 
-    let amount = this.state.Amount;
-    let addrs = this.state.User;
+    let DeviceID = this.state.DeviceID;
 
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
         console.log(instance);
-  return instance.deprecate(amount);
+  return instance.deprecate(DeviceID);
 
 }).then(function(suc) {
         console.log(suc);

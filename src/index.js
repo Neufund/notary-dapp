@@ -55,7 +55,7 @@ import reducers from './reducers';
                         <Route path="/login" component={Login}/>
                         <Route path="/contracts" component={Contracts}/>
                         <Route path="/logout" component={Logout}/>
-                        <Route path="/Activate/:testme" component={Activate}/>
+                        <Route path="/Activate" component={Activate}/>
                         <Route path="/confirm" component={Confirm}/>
                         <Route path="/deprecate" component={deprecate}/>
                     </Route>
