@@ -13,27 +13,6 @@ import {contract} from '../web3';
 
 import history from '../history';
 
-
-const styles = {
-  errorStyle: {
-    color: grey900,
-  },
-  underlineStyle: {
-    borderColor: grey900,
-  },
-  floatingLabelStyle: {
-    color: grey900,
-  },
-  floatingLabelFocusStyle: {
-    color: lime500,
-  },
-};
-//Styles for buttons
-const style = {
-  backgroundColor: grey900,
-  margin: 12,
-};
-
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
@@ -99,7 +78,7 @@ class Transfer extends React.Component {
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Amount} onChange={this.handleIDChange}/>
         </form>
-          <RaisedButton label="Deprecate" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
+          <RaisedButton label="Deprecate" style={window.style} onClick={this.handleRegister} />
       </div>
     );
   }

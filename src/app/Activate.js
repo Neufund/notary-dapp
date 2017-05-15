@@ -4,7 +4,7 @@ import Headline from '../ui/Headline';
 import './Contracts.scss';
 import cms from '../cms';
 
-import {grey900, lime500} from 'material-ui/styles/colors';
+import {grey900, grey50} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -13,26 +13,6 @@ import {contract} from '../web3';
 
 import history from '../history';
 
-
-const styles = {
-  errorStyle: {
-    color: grey900,
-  },
-  underlineStyle: {
-    borderColor: grey900,
-  },
-  floatingLabelStyle: {
-    color: grey900,
-  },
-  floatingLabelFocusStyle: {
-    color: lime500,
-  },
-};
-//Styles for buttons
-const style = {
-  backgroundColor: grey900,
-  margin: 12,
-};
 
 class Transfer extends React.Component {
   constructor(props) {
@@ -109,7 +89,7 @@ class Transfer extends React.Component {
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Owner} onChange={this.handleOwnerChange}/>
         </form>
-          <RaisedButton label="Activate" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
+          <RaisedButton label="Activate"  style={window.style} onClick={this.handleRegister} />
       </div>
     );
   }

@@ -39,6 +39,7 @@ class Login extends React.Component {
         ledgerLoginProvider.onDisconnect(() => {
             history.push("/logout");
         });
+        console.log("HAHAHAH IT MOUNTED");
         this.onLedgerConnected();
     }
 
@@ -60,7 +61,9 @@ class Login extends React.Component {
         ledgerLoginProvider.stop();
         try {
             window.accounts = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
-            console.log(accounts);
+          //   let help = await toPromise(ledger.signTransaction, [], []);
+
+          //  console.log(help);
             let test = await toPromise(window.web3.eth.getAccounts);
             console.log(test);
             console.log('test me ');
@@ -80,8 +83,8 @@ class Login extends React.Component {
 
     async onAccountConfirmed() {
         if (this.askForAccountConfirmation) {
-            this.countdown.complete();
-            await wait(ANIMATION_DURATION);
+      //      this.countdown.complete();
+      //      await wait(ANIMATION_DURATION);
         }
         // TODO Check backend
         if (false) {
@@ -99,9 +102,13 @@ class Login extends React.Component {
     }
 
     async onUserDataFetched() {
-        await toPromiseNoError(this.setState.bind(this), {completed: true});
-        await wait(ANIMATION_DURATION);
+      //  await toPromiseNoError(this.setState.bind(this), {completed: true});
+      //  await wait(ANIMATION_DURATION);
+      console.log(window.mode);
+      if(window.mode === 1)
         history.push("/contracts");
+      if(window.mode === 2)
+        history.push("/confirm");
 
     }
 
@@ -156,29 +163,6 @@ class Login extends React.Component {
         );
     }
 
-    step3() {
-        return (
-            <div className="Login-content row">
-                <div className="col-xs-12">
-                    <div className="waitingForData">
-                        {
-                            this.state.completed
-                                ?
-                                <div>
-                                    <Step completed={this.state.completed}>Authentication completed</Step>
-                                    Welcome Mr. Investor
-                                </div>
-                                :
-                                <div>
-                                    <div>Fetching your data...</div>
-                                    <CircularProgress className="progress" size={80} thickness={5}/>
-                                </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     browserNotSupported =
         <div>
@@ -230,9 +214,7 @@ class Login extends React.Component {
                 case 2:
                     step = this.step2();
                     break;
-                default:
-                    step = this.step3();
-                    break;
+
             }
         }
 
