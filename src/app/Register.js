@@ -27,6 +27,16 @@ class Transfer extends React.Component {
       last: '',
     };
 
+
+    const NanoData = contract.deployed().then(instance => instance.nanoStates.call(7777)).then((suc) => {
+      console.log(suc);
+      //history.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+      //  history.push('/');
+      });
+    //console.log(NanoData);
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
@@ -70,12 +80,19 @@ class Transfer extends React.Component {
     const amount = this.state.DeviceID;
 
     if (contract !== undefined || contract !== null) {
-
-      const test = await contract.registerNano(this.state.addrs[0], amount, {from: this.state.addrs[0]});
-      console.log(test);
-
+      contract.deployed()
+      .then(instance => instance.registerNano('0xf666111c610ff3f27d22452320f89178ef8979ed', amount))
+      .then((suc) => {
+        console.log(suc);
+      //  history.push('/');
+        })
+        .catch((err) => {
+          console.log(err);
+          history.push('/');
+        });
   }
 }
+
 
   async handleRegister2() {
     console.log('Its me');

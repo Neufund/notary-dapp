@@ -8,9 +8,8 @@ import { toPromise } from './utils';
 
 
 let ledger = null;
-// const NeukeyNotary = null;
+let NeukeyNotary = null;
 const NODE_URL = '/api/';
-let instance = null;
 
 const initWeb3 = async function () {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask/Parity)
@@ -26,21 +25,18 @@ const initWeb3 = async function () {
     }));
     engine.start();
     window.web3 = new Web3(engine);
-  //  const accounts = await toPromise(window.web3.eth.getAccounts);
-  //  console.log(accounts);
-  //  window.web3Manager = new Web3(new Web3.providers.HttpProvider(NODE_URL));
-  //  window.web3Manager.eth.defaultAccount = window.web3Manager.eth.accounts[0];
-  // Use to send Ether to
-  //  window.web3Manager.eth.sendTransaction({ from: window.web3Manager.eth.accounts[1], to: '0x1078291bbcc539f51559f14bc57d1575d3801df8', value: window.web3.toWei(1, 'ether') });
   }
-  if (instance == null) {
-    const NeukeyNotary = await contract(NeukeyNotaryArtifacts);
+  if (NeukeyNotary == null) {
+    NeukeyNotary = await contract(NeukeyNotaryArtifacts);
     await NeukeyNotary.setProvider(window.web3.currentProvider);
-    instance = await NeukeyNotary.deployed();
   } else {
     console.log('Already a contract instance is there');
   }
-// NeukeyNotary.deployed().then(instance => instance.setNotary('0x3605d3d35878daf71d9af44692ccf0f04e9a2446'));
+  NeukeyNotary.defaults({
+    from: '0xf666111c610ff3f27d22452320f89178ef8979eb',
+  });
+  // Only once to set the notary
+  // NeukeyNotary.deployed().then(instance => instance.setNotary('0xf666111c610ff3f27d22452320f89178ef8979eb'));
 };
 
 const exportObject = {
@@ -52,7 +48,7 @@ const exportObject = {
     return window.web3;
   },
   get contract() {
-    return instance;
+    return NeukeyNotary;
   },
 };
 

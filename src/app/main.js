@@ -30,7 +30,7 @@ class Transfer extends React.Component {
   constructor(props) {
     super(props);
     this.state = { list: [], key: '', open: false };
-  /*  TransPromise = contract.deployed().then(instance =>
+    TransPromise = contract.deployed().then(instance =>
       // Issue with filtering
       // https://github.com/ethereum/web3.js/issues/452
         instance.allEvents({ fromBlock: 0, toBlock: 'latest' })).then(events => new Promise((resolve, reject) => {
@@ -42,16 +42,16 @@ class Transfer extends React.Component {
               resolve(result);
             }
           });
-        }));*/
+        }));
   }
 
   async componentDidMount() {
     // wait for transactions from web3
     console.log(contract);
 
-  const test = await contract.allEvents({ fromBlock: 0, toBlock: 'latest' });
 
-  /*  const instance = await contract.deployed();
+
+    const instance = await contract.deployed();
     const list = (await TransPromise)
       .filter(result => result.event === 'DeviceRegistered')
       .map(result => result.args.deviceId.c[0])
@@ -68,7 +68,7 @@ class Transfer extends React.Component {
     );
 
     this.setState({ list: (await Promise.all(list)).filter(device => !device.deprecated) });
-  */
+
 }
 
   handleRegister() {
@@ -108,7 +108,7 @@ class Transfer extends React.Component {
         <Table>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow >
-              <TableHeaderColumn width={25}>DeviceId</TableHeaderColumn>
+              <TableHeaderColumn width={30}>DeviceId</TableHeaderColumn>
               <TableHeaderColumn width={300}>Publick key</TableHeaderColumn>
               <TableHeaderColumn>Owner Id</TableHeaderColumn>
               <TableHeaderColumn>Confirmed</TableHeaderColumn>
@@ -118,7 +118,7 @@ class Transfer extends React.Component {
           <TableBody displayRowCheckbox={false}>
             {this.state.list.map(device =>
               <TableRow key={device.id}>
-                <TableRowColumn width={25}>{device.id}</TableRowColumn>
+                <TableRowColumn width={30}>{device.id}</TableRowColumn>
                 <TableRowColumn width={300}>{device.Pubkey}</TableRowColumn>
                 <TableRowColumn>
                   {touchme({ owner: device.OwnerID, id: device.id })}
