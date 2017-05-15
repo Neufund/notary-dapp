@@ -30,7 +30,6 @@ class Transfer extends React.Component {
   constructor(props) {
     super(props);
     this.state = { list: [], key: '', open: false };
-    console.log(history);
   /*  TransPromise = contract.deployed().then(instance =>
       // Issue with filtering
       // https://github.com/ethereum/web3.js/issues/452
@@ -48,8 +47,9 @@ class Transfer extends React.Component {
 
   async componentDidMount() {
     // wait for transactions from web3
+    console.log(contract);
 
-const test = await contract.allEvents({ fromBlock: 0, toBlock: 'latest' });
+  const test = await contract.allEvents({ fromBlock: 0, toBlock: 'latest' });
 
   /*  const instance = await contract.deployed();
     const list = (await TransPromise)

@@ -1,13 +1,14 @@
-import LedgerWalletProviderFactory from 'ledger-wallet-provider';
+import LedgerWalletSubproviderFactory from 'ledger-wallet-provider';
 import Web3 from 'web3';
 import contract from 'truffle-contract';
 import NeukeyNotaryArtifacts from '../contracts-private/build/contracts/NeukeyNotary.json';
-import web3Polyfill from 'web3-polyfill';
+import ProviderEngine from 'web3-provider-engine';
+import RpcSubprovider from 'web3-provider-engine/subproviders/rpc';
 import { toPromise } from './utils';
 
 
 let ledger = null;
-const NeukeyNotary = null;
+// const NeukeyNotary = null;
 const NODE_URL = '/api/';
 let instance = null;
 
@@ -16,9 +17,15 @@ const initWeb3 = async function () {
   if (typeof window.web3 !== 'undefined') {
     console.log('web3 already exists');
   } else {
-    const hookedWalletSubprovider = await LedgerWalletProviderFactory();
-    ledger = hookedWalletSubprovider.ledger;
-    web3Polyfill(window)(NODE_URL, hookedWalletSubprovider);
+    const engine = new ProviderEngine();
+    const ledgerWalletSubProvider = await LedgerWalletSubproviderFactory();
+    ledger = ledgerWalletSubProvider.ledger;
+    engine.addProvider(ledgerWalletSubProvider);
+    engine.addProvider(new RpcSubprovider({
+      rpcUrl: NODE_URL,
+    }));
+    engine.start();
+    window.web3 = new Web3(engine);
   //  const accounts = await toPromise(window.web3.eth.getAccounts);
   //  console.log(accounts);
   //  window.web3Manager = new Web3(new Web3.providers.HttpProvider(NODE_URL));
@@ -26,11 +33,14 @@ const initWeb3 = async function () {
   // Use to send Ether to
   //  window.web3Manager.eth.sendTransaction({ from: window.web3Manager.eth.accounts[1], to: '0x1078291bbcc539f51559f14bc57d1575d3801df8', value: window.web3.toWei(1, 'ether') });
   }
-  const NeukeyNotary = await contract(NeukeyNotaryArtifacts);
-  await NeukeyNotary.setProvider(window.web3.currentProvider);
-  instance = await NeukeyNotary.deployed();
-  console.log(instance);
-//  NeukeyNotary.deployed().then(instance => instance.setNotary('0x3605d3d35878daf71d9af44692ccf0f04e9a2446'));
+  if (instance == null) {
+    const NeukeyNotary = await contract(NeukeyNotaryArtifacts);
+    await NeukeyNotary.setProvider(window.web3.currentProvider);
+    instance = await NeukeyNotary.deployed();
+  } else {
+    console.log('Already a contract instance is there');
+  }
+// NeukeyNotary.deployed().then(instance => instance.setNotary('0x3605d3d35878daf71d9af44692ccf0f04e9a2446'));
 };
 
 const exportObject = {

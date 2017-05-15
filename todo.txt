@@ -2,10 +2,11 @@ Notary Dapp TODO
 
 - Remove global variables
 - Use Notary Ledger
-- Use Metamask provider
+- Connect contracts with Web3-provider-engine
 - Clean code
 - Add the ability to add more than one key for registring
 
 - Use Bignumber Library (OK)
 - Get rid of the login (OK)
 - Change the Table to add Pubkey , ownerId (ok)
+- Use Web3-provider-engine (OK)

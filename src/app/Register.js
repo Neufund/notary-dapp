@@ -10,7 +10,7 @@ import cms from '../cms';
 import history from '../history';
 
 import { toPromise, toPromiseNoError } from '../utils';
-//import { ledger, contract } from '../web3';
+import { ledger, contract } from '../web3';
 import ledgerLoginProvider from '../ledgerLoginProvider';
 
 
@@ -70,20 +70,12 @@ class Transfer extends React.Component {
     const amount = this.state.DeviceID;
 
     if (contract !== undefined || contract !== null) {
-      contract.deployed()
-      .then(instance => instance.registerNano(this.state.addrs, amount))
-      .then((suc) => {
-        console.log(suc);
-        history.push('/');
-      })
-      .catch((err) => {
-        console.log(err);
-        history.push('/');
-      });
-    } else {
-      console.info('Contract is not deployed');
-    }
+
+      const test = await contract.registerNano(this.state.addrs[0], amount, {from: this.state.addrs[0]});
+      console.log(test);
+
   }
+}
 
   async handleRegister2() {
     console.log('Its me');
@@ -107,7 +99,7 @@ class Transfer extends React.Component {
             onChange={this.handleIDChange}
           />
         </form>
-        <IconButton onClick={this.handleRegister2}><Add /></IconButton>
+        <IconButton onClick={this.handleRegister}><Add /></IconButton>
       </div>
     );
   }
