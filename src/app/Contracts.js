@@ -18,6 +18,8 @@ class Transfer extends React.Component {
     super(props);
 
     this.state = { Amount: ''};
+    this.state = {list: ''};
+
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
@@ -30,18 +32,7 @@ class Transfer extends React.Component {
 
     let amount = this.state.Amount;
     let addrs = window.accounts[0];
-    //Input checks (More research regarding javascripts security methods to be doen)
-  /*  if(amount.match(/^[0-9A-Fa-fxX]+$/) == null
-       || addrs.match(/^[0-9A-Fa-fxX]+$/) == null
-        || amount === ''
-         || addrs === '') {
 
-       alert("Wrong input");
-       //Only amount is emptied because its annoying to rewrite the full adress again
-       this.setState({Amount: ''});
-       return;
-     }*/
-     //console.log(window.accounts[0]);
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
         console.log(instance);
@@ -64,6 +55,7 @@ class Transfer extends React.Component {
       console.info("Contract is not deployed");
     }
   }
+
 
   render() {
     return (

@@ -17,7 +17,7 @@ class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {User: '', Amount: ''};
+    this.state = {User: '', Amount: window.deviceID};
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
 
@@ -31,18 +31,7 @@ class Transfer extends React.Component {
 
     let amount = this.state.Amount;
     let addrs = this.state.User;
-    //Input checks (More research regarding javascripts security methods to be doen)
-  /*  if(amount.match(/^[0-9A-Fa-fxX]+$/) == null
-       || addrs.match(/^[0-9A-Fa-fxX]+$/) == null
-        || amount === ''
-         || addrs === '') {
 
-       alert("Wrong input");
-       //Only amount is emptied because its annoying to rewrite the full adress again
-       this.setState({Amount: ''});
-       return;
-     }*/
-     //console.log(window.accounts[0]);
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
         console.log(instance);
@@ -74,9 +63,10 @@ class Transfer extends React.Component {
         <form>
           <TextField
             floatingLabelText="Device ID"
+            defaultValue= {window.deviceID}
             floatingLabelStyle={styles.floatingLabelStyle}
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-            value={this.state.Amount} onChange={this.handleIDChange}/>
+             onChange={this.handleIDChange}/>
         </form>
           <RaisedButton label="Deprecate" style={window.style} onClick={this.handleRegister} />
       </div>

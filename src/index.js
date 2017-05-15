@@ -21,6 +21,7 @@ import './index.scss';
 import 'flexboxgrid'
 import web3 from './web3';
 import LedgerLoginProvider from './ledgerLoginProvider';
+
 import {createStore, combineReducers, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
 import {createDevTools} from 'redux-devtools'
@@ -42,23 +43,21 @@ import reducers from './reducers';
         ...reducers,
         routing: routerReducer
     });
-
     const store = createStore(reducer, applyMiddleware(middleware));
 
     const syncedHistory = syncHistoryWithStore(history, store);
 
     ReactDOM.render((
-            <Provider store={store}>
+          <Provider store={store}>
                 <Router history={syncedHistory}>
                     <Route component={App}>
                         <Route path="/" component={Main}/>
                         <Route path="/login" component={Login}/>
                         <Route path="/contracts" component={Contracts}/>
                         <Route path="/logout" component={Logout}/>
-                        <Route path="/Activate" component={Activate}/>
+                        <Route path="/Activate/:testme" component={Activate}/>
                         <Route path="/confirm" component={Confirm}/>
                         <Route path="/deprecate" component={deprecate}/>
-
                     </Route>
                 </Router>
             </Provider>
