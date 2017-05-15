@@ -1,38 +1,33 @@
 import React from 'react';
-import ProgressBar from '../ui/ProgressBar';
-import Headline from '../ui/Headline';
-import cms from '../cms';
-
-import { grey900, grey50 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import Headline from '../ui/Headline';
+import cms from '../cms';
 import nano2 from '../images/nano2.png';
 import { contract } from '../web3';
-
 import history from '../history';
 
 class Activate extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+
     this.state = { Owner: '', Device: window.deviceID };
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleOwnerChange = this.handleOwnerChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
-  // amount form
+
   handleIDChange(event) {
     this.setState({ Device: event.target.value });
   }
   handleOwnerChange(event) {
     this.setState({ Owner: event.target.value });
   }
-  // Deposit button
-  handleRegister(event) {
+
+  handleRegister() {
     const Device = this.state.Device;
     const Owner = this.state.Owner;
-    if (typeof contract !== undefined || typeof contract !== null) {
+    if (contract !== undefined || contract !== null) {
       contract.deployed().then(instance => instance.activateNano(Device, Owner)).then((suc) => {
         console.log(suc);
         history.push('/');
@@ -53,7 +48,6 @@ class Activate extends React.Component {
   render() {
     return (
       <div>
-        {console.log(this.props)}
         <img src={nano2} alt="nano2" width="350" />
         <div className="secondary-info">Serial number is engraved Number</div>
         <form>

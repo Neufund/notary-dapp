@@ -1,11 +1,10 @@
 import React from 'react';
-import ProgressBar from '../ui/ProgressBar';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import Headline from '../ui/Headline';
 import cms from '../cms';
 
-import { grey900, lime500 } from 'material-ui/styles/colors';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import nano2 from '../images/nano2.png';
 import { contract } from '../web3';
@@ -23,10 +22,10 @@ class Transfer extends React.Component {
   handleIDChange(event) {
     this.setState({ DeviceID: event.target.value });
   }
-  handleRegister(event) {
+  handleRegister() {
     const DeviceID = this.state.DeviceID;
 
-    if (typeof contract !== undefined || typeof contract !== null) {
+    if (contract !== undefined || contract !== null) {
       contract.deployed().then((instance) => {
         console.log(instance);
         return instance.deprecate(DeviceID);
@@ -36,7 +35,6 @@ class Transfer extends React.Component {
       //  to be removed after hot reloading is enabled
       }).catch((err) => {
         console.log(err);
-        alert('!');
         history.push('/');
       //  window.location.reload();
       });
@@ -54,8 +52,6 @@ class Transfer extends React.Component {
           <TextField
             floatingLabelText="Device ID"
             defaultValue={window.deviceID}
-            floatingLabelStyle={styles.floatingLabelStyle}
-            floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             onChange={this.handleIDChange}
           />
         </form>
