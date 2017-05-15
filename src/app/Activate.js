@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Headline from '../ui/Headline';
 import cms from '../cms';
 import nano2 from '../images/nano2.png';
-import { contract } from '../web3';
+//import { contract, web3 } from '../web3';
 import history from '../history';
 
 class Activate extends React.Component {
@@ -53,18 +53,14 @@ class Activate extends React.Component {
         <form>
           <TextField
             floatingLabelText="Device ID"
-            floatingLabelStyle={styles.floatingLabelStyle}
-            floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Device} onChange={this.handleIDChange}
           />
           <TextField
             floatingLabelText="Owner ID"
-            floatingLabelStyle={styles.floatingLabelStyle}
-            floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Owner} onChange={this.handleOwnerChange}
           />
         </form>
-        <RaisedButton label="Activate" style={window.style} onClick={this.handleRegister} />
+        <RaisedButton label="Activate" onClick={this.handleRegister} />
       </div>
     );
   }

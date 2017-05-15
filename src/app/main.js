@@ -31,7 +31,7 @@ class Transfer extends React.Component {
     super(props);
     this.state = { list: [], key: '', open: false };
     console.log(history);
-    TransPromise = contract.deployed().then(instance =>
+  /*  TransPromise = contract.deployed().then(instance =>
       // Issue with filtering
       // https://github.com/ethereum/web3.js/issues/452
         instance.allEvents({ fromBlock: 0, toBlock: 'latest' })).then(events => new Promise((resolve, reject) => {
@@ -43,13 +43,15 @@ class Transfer extends React.Component {
               resolve(result);
             }
           });
-        }));
+        }));*/
   }
 
   async componentDidMount() {
     // wait for transactions from web3
 
-    const instance = await contract.deployed();
+const test = await contract.allEvents({ fromBlock: 0, toBlock: 'latest' });
+
+  /*  const instance = await contract.deployed();
     const list = (await TransPromise)
       .filter(result => result.event === 'DeviceRegistered')
       .map(result => result.args.deviceId.c[0])
@@ -66,7 +68,8 @@ class Transfer extends React.Component {
     );
 
     this.setState({ list: (await Promise.all(list)).filter(device => !device.deprecated) });
-  }
+  */
+}
 
   handleRegister() {
     history.push('/Register');

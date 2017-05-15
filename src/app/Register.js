@@ -10,7 +10,7 @@ import cms from '../cms';
 import history from '../history';
 
 import { toPromise, toPromiseNoError } from '../utils';
-import { ledger, contract } from '../web3';
+//import { ledger, contract } from '../web3';
 import ledgerLoginProvider from '../ledgerLoginProvider';
 
 

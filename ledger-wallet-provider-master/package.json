@@ -1,0 +1,37 @@
+{
+  "name": "ledger-wallet-provider",
+  "version": "1.15.4",
+  "description": "Ledger Nano S wallet provider for the Web3 ProviderEngine",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir lib",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neufund/ledger-wallet-provider.git"
+  },
+  "author": "Neufund",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Neufund/ledger-wallet-provider/issues"
+  },
+  "homepage": "https://github.com/Neufund/ledger-wallet-provider#readme",
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.22.1",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-regenerator": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-es2017": "^6.22.0"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.23.0",
+    "ledgerco": "^1.1.2",
+    "promise-timeout": "^1.1.1",
+    "u2f-api": "^0.0.9",
+    "web3-provider-engine": "^11.0.0"
+  }
+}

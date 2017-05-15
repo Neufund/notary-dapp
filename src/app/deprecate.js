@@ -7,7 +7,7 @@ import cms from '../cms';
 
 
 import nano2 from '../images/nano2.png';
-import { contract } from '../web3';
+//import { contract } from '../web3';
 
 import history from '../history';
 
@@ -55,7 +55,7 @@ class Transfer extends React.Component {
             onChange={this.handleIDChange}
           />
         </form>
-        <RaisedButton label="Deprecate" style={window.style} onClick={this.handleRegister} />
+        <RaisedButton label="Deprecate"  onClick={this.handleRegister} />
       </div>
     );
   }
