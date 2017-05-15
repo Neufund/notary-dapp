@@ -13,22 +13,76 @@ import {contract} from '../web3';
 
 import history from '../history';
 
+import {toPromise, toPromiseNoError, wait} from '../utils';
+import {ledger} from '../web3';
+import ledgerLoginProvider from '../ledgerLoginProvider';
+
+
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { Amount: ''};
-    this.state = {list: ''};
+    this.askForAccountConfirmation = true;
+    this.state = {
+        Amount: '',
+        list: '',
+        completed: false,
+        step: 1,
+        browserSupported: true,
+        nonNeufundLedger: false,
+        oldEthereumApp: false,
+        showTutorial: false,
+        config: null,
+        accounts: null
+    };
 
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
-  //amount form
-  handleIDChange(event) {
+  async componentDidMount() {
+      await toPromiseNoError(this.setState.bind(this), {"browserSupported": ledger.isU2FSupported});
+      await ledgerLoginProvider.waitUntilConnected();
+      await toPromiseNoError(this.setState.bind(this), {"oldEthereumApp": ledgerLoginProvider.versionIsSupported});
+      ledgerLoginProvider.onDisconnect(() => {
+          history.push("/logout");
+      });
+      this.onLedgerConnected();
+  }
+  async onLedgerConnected() {
+      await toPromiseNoError(this.setState.bind(this), {completed: true, step: 1});
+      if (this.askForAccountConfirmation) {
+          await toPromiseNoError(this.setState.bind(this), {completed: false, step: 2});
+      }
+      console.log("Nano Public key");
+      await this.getAccount();
+  }
+
+  async getAccount() {
+      ledgerLoginProvider.stop();
+      try {
+          window.accounts = await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]);
+          let test = await toPromise(window.web3.eth.getAccounts);
+          console.log(test);
+          console.log('test me ');
+          if (this.askForAccountConfirmation) {
+              await toPromiseNoError(this.setState.bind(this), {completed: true, accounts});
+          } else {
+              await toPromiseNoError(this.setState.bind(this), {accounts});
+          }
+        //  this.onAccountConfirmed() START FROM HERE!!
+      } catch (error) {
+          console.log(error);
+          this.countdown.reset();
+          this.timeoutId = setTimeout(this.getAccount.bind(this), CHECK_INTERVAL);
+      }
+      ledgerLoginProvider.start();
+  }
+
+  async handleIDChange(event) {
     this.setState({Amount: event.target.value});
   }
-  //Deposit button
-  handleRegister(event) {
+
+  async handleRegister(event) {
 
     let amount = this.state.Amount;
     let addrs = window.accounts[0];

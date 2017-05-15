@@ -1,5 +1,4 @@
 import React from 'react';
-import ProgressBar from '../ui/ProgressBar';
 import Headline from '../ui/Headline';
 import './Contracts.scss';
 import cms from '../cms';
@@ -8,7 +7,6 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 
 
 import {grey900, grey50} from 'material-ui/styles/colors';
-import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
@@ -16,14 +14,14 @@ import IconButton from 'material-ui/IconButton';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Add from 'material-ui/svg-icons/content/add';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
-import nano2 from '../images/nano2.png';
 import {contract} from '../web3';
 
 import history from '../history';
 
 let TransPromise = undefined;
-//let list = undefined;
 
 window.styles = {
   errorStyle: {
@@ -39,15 +37,10 @@ window.styles = {
     color: grey50,
   },
 };
-//Styles for buttons
 window.style = {
   backgroundColor: grey900,
   margin: 12,
 };
-
-/*    <RaisedButton label="Deprecate"  style={style} backgroundColor={grey50} onClick={this.handleDeprecate} />
-      <RaisedButton label="Confirm"  style={style} backgroundColor={grey50} onClick={this.handleConfirm} />
-*/
 
 function handleDeprecate(dev) {
   window.deviceID=dev;
@@ -64,7 +57,7 @@ function touchme(props){
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {list: [],key: ''};
+    this.state = {list: [],key: '',open: false};
       console.log(history);
      TransPromise = contract.deployed().then(function(instance) {
       //Issue with filtering
@@ -111,21 +104,33 @@ class Transfer extends React.Component {
       .map(result => result.args.deviceId.c[0])
       .map(async function(id) {
         const NanoData = await instance.nanoStates.call(id);
-        console.log(NanoData);
         return({
-          id: NanoData[0].c[0],
+          id: new window.web3.BigNumber(NanoData[0]).toString(10),
           Pubkey: NanoData[1].toString(),
-          OwnerID: NanoData[2].c[0],
+          OwnerID: new window.web3.BigNumber(NanoData[2]).toString(10),
           confirmed: NanoData[3].toString(),
           deprecated: await instance.isDeprecated.call(id)
       })}
     );
 
     this.setState({list: (await Promise.all(list)).filter(device => !device.deprecated)});
-    console.log(this.state.list);
 };
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleClose}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.handleClose}
+      />,
+    ];
+
     return (
       <div>
       <IconButton onClick={() => this.handleRegister()}><Add /></IconButton>
@@ -151,6 +156,15 @@ class Transfer extends React.Component {
                         )}
                       </TableBody>
                     </Table>
+                    <Dialog
+          title="Dialog With Actions"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
+          The actions in this window were passed in as an array of React objects.
+        </Dialog>
       </div>
 
     );
