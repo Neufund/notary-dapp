@@ -81,10 +81,10 @@ class Transfer extends React.Component {
 
     if (contract !== undefined || contract !== null) {
       contract.deployed()
-      .then(instance => instance.registerNano('0xf666111c610ff3f27d22452320f89178ef8979ed', amount))
+      .then(instance => instance.registerNano('0xf666111c610ff3f27d22452320f89178ef8979cf', amount))
       .then((suc) => {
         console.log(suc);
-      //  history.push('/');
+        history.push('/');
         })
         .catch((err) => {
           console.log(err);

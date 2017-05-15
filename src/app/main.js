@@ -15,13 +15,15 @@ import history from '../history';
 
 let TransPromise;
 
-function handleDeprecate(dev) {
+function handleActivate(dev) {
+  window.deviceID = dev;
+  console.log(dev);
   history.push('/activate');
 }
 
 function touchme(props) {
   if (props.owner == 0) {
-    return <IconButton onClick={() => handleDeprecate(props.id)}><Add /></IconButton>;
+    return <IconButton onClick={() => handleActivate(props.id)}><Add /></IconButton>;
   }
   return props.owner;
 }

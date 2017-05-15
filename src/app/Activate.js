@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Headline from '../ui/Headline';
 import cms from '../cms';
 import nano2 from '../images/nano2.png';
-//import { contract, web3 } from '../web3';
+import { contract, web3 } from '../web3';
 import history from '../history';
 
 class Activate extends React.Component {
@@ -27,16 +27,20 @@ class Activate extends React.Component {
   handleRegister() {
     const Device = this.state.Device;
     const Owner = this.state.Owner;
+    console.log(Device);
+    console.log(Owner);
     if (contract !== undefined || contract !== null) {
-      contract.deployed().then(instance => instance.activateNano(Device, Owner)).then((suc) => {
+      contract.defaults({
+        from: '0xf666111c610ff3f27d22452320f89178ef8979eb',
+      });
+      contract.deployed().then(function (instance) {
+        console.log(instance);
+        return instance.activateNano(Device, Owner)}).then((suc) => {
         console.log(suc);
         history.push('/');
-    //    window.location.reload();
-
-      //  to be removed after hot reloading is enabled
       }).catch((err) => {
         console.log(err);
-        alert('NANO ALREADY ACTIVATED OR NOT REGISTEREDS!');
+        //alert('NANO ALREADY ACTIVATED OR NOT REGISTEREDS!');
         history.push('/');
         // window.location.reload();
       });

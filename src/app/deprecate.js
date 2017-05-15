@@ -7,7 +7,7 @@ import cms from '../cms';
 
 
 import nano2 from '../images/nano2.png';
-//import { contract } from '../web3';
+import { contract } from '../web3';
 
 import history from '../history';
 
@@ -26,9 +26,10 @@ class Transfer extends React.Component {
     const DeviceID = this.state.DeviceID;
 
     if (contract !== undefined || contract !== null) {
+
       contract.deployed().then((instance) => {
         console.log(instance);
-        return instance.deprecate(DeviceID);
+        return instance.deprecate(DeviceID,{from: '0xf666111c610ff3f27d22452320f89178ef8979eb'});
       }).then((suc) => {
         console.log(suc);
         history.push('/');
