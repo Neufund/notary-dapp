@@ -1,5 +1,5 @@
 {
-  "name": "dapp-starter-kit",
+  "name": "notary-dapp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -39,17 +39,25 @@
     "truffle-contract": "^2.0.0",
     "url-loader": "^0.5.8",
     "web3": "^0.18.2",
-    "web3-polyfill": "^1.1.1",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.2"
+    "web3-polyfill": "^1.1.1"
   },
   "scripts": {
     "build": "webpack",
+    "test": "mocha --compilers js:babel-core/register",
+    "lint": "eslint .",
     "dev": "webpack-dev-server --https --open --colors --progress --history-api-fallback"
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "mocha": "^3.3.0",
     "node-sass": "^4.5.2",
-    "sass-loader": "^6.0.3"
+    "sass-loader": "^6.0.3",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.5"
   }
 }
