@@ -67,7 +67,7 @@ class Transfer extends React.Component {
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
         console.log(instance);
-  return instance.registerNano('0x1078291bbcc539f51559f14bc57d1575d3801df8',amount);
+  return instance.deprecate(amount);
 
 }).then(function(suc) {
         console.log(suc);
@@ -75,7 +75,7 @@ class Transfer extends React.Component {
       //  to be removed after hot reloading is enabled
 }).catch(function(err){
   console.log(err);
-  alert("NANO ALREADY REGISTERED!")
+  alert("!")
   history.push("/");
       //  window.location.reload();
 
@@ -99,7 +99,7 @@ class Transfer extends React.Component {
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
             value={this.state.Amount} onChange={this.handleIDChange}/>
         </form>
-          <RaisedButton label="Deposit" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
+          <RaisedButton label="Deprecate" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
       </div>
     );
   }

@@ -38,20 +38,24 @@ class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {User: '', Amount: ''};
+    this.state = {Owner: '', Device: ''};
     this.handleIDChange = this.handleIDChange.bind(this);
+    this.handleOwnerChange = this.handleOwnerChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
 
   }
   //amount form
   handleIDChange(event) {
-    this.setState({Amount: event.target.value});
+    this.setState({Device: event.target.value});
+  }
+  handleOwnerChange(event) {
+    this.setState({Owner: event.target.value});
   }
   //Deposit button
   handleRegister(event) {
 
-    let amount = this.state.Amount;
-    let addrs = this.state.User;
+    let Device = this.state.Device;
+    let Owner = this.state.Owner;
     //Input checks (More research regarding javascripts security methods to be doen)
   /*  if(amount.match(/^[0-9A-Fa-fxX]+$/) == null
        || addrs.match(/^[0-9A-Fa-fxX]+$/) == null
@@ -60,24 +64,25 @@ class Transfer extends React.Component {
 
        alert("Wrong input");
        //Only amount is emptied because its annoying to rewrite the full adress again
-       this.setState({Amount: ''});
+       this.setState({Device: ''});
        return;
      }*/
      //console.log(window.accounts[0]);
     if(typeof contract !== undefined || typeof contract !== null) {
       contract.deployed().then(function(instance) {
-        console.log(instance);
-  return instance.registerNano('0x1078291bbcc539f51559f14bc57d1575d3801df8',amount);
+        return instance.activateNano(Device,Owner);
 
 }).then(function(suc) {
         console.log(suc);
         history.push("/");
+    //    window.location.reload();
+
       //  to be removed after hot reloading is enabled
 }).catch(function(err){
   console.log(err);
-  alert("NANO ALREADY REGISTERED!")
+  alert("NANO ALREADY ACTIVATED OR NOT REGISTEREDS!")
   history.push("/");
-      //  window.location.reload();
+        //window.location.reload();
 
 });
 
@@ -97,9 +102,14 @@ class Transfer extends React.Component {
             floatingLabelText="Device ID"
             floatingLabelStyle={styles.floatingLabelStyle}
             floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-            value={this.state.Amount} onChange={this.handleIDChange}/>
+            value={this.state.Device} onChange={this.handleIDChange}/>
+          <TextField
+            floatingLabelText="Owner ID"
+            floatingLabelStyle={styles.floatingLabelStyle}
+            floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+            value={this.state.Owner} onChange={this.handleOwnerChange}/>
         </form>
-          <RaisedButton label="Deposit" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
+          <RaisedButton label="Activate" primary={true} style={style} backgroundColor={lime500} onClick={this.handleRegister} />
       </div>
     );
   }
