@@ -7,7 +7,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
 import App from './app/App.js';
-import Contracts from './app/Contracts.js';
+import Register from './app/Register.js';
 import Main from './app/main.js';
 import Activate from './app/Activate.js';
 import deprecate from './app/deprecate.js';
@@ -50,7 +50,7 @@ import reducers from './reducers';
                 <Router history={syncedHistory}>
                     <Route component={App}>
                         <Route path="/" component={Main}/>
-                        <Route path="/contracts" component={Contracts}/>
+                        <Route path="/Register" component={Register}/>
                         <Route path="/Activate" component={Activate}/>
                         <Route path="/confirm" component={Confirm}/>
                         <Route path="/deprecate" component={deprecate}/>

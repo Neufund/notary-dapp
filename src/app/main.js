@@ -1,6 +1,5 @@
 import React from 'react';
 import Headline from '../ui/Headline';
-import './Contracts.scss';
 import cms from '../cms';
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -49,7 +48,7 @@ function handleDeprecate(dev) {
 }
 
 function touchme(props){
-  if(props.owner===0)
+  if(props.owner==0)
   return <IconButton onClick={() => handleDeprecate(props.id)}><Add /></IconButton>;
   return props.owner;
 }
@@ -78,7 +77,7 @@ class Transfer extends React.Component {
 
   handleRegister(event) {
     window.mode = 1;
-      history.push("/Login");
+      history.push("/Register");
   }
   handleActivate(event) {
       history.push("/Activate");
