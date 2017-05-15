@@ -1,0 +1,15 @@
+@import "../../styles/colors";
+@import "../../styles/dimensions";
+@import "../../styles/global";
+
+.Footer{
+  height: $footer-height;
+  display: flex;
+  justify-content: space-between;
+  color: $link-not-available;
+  background-color: $background;
+
+  div {
+    line-height: $footer-height;
+  }
+}

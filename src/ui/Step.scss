@@ -1,0 +1,26 @@
+@import "../styles/colors";
+
+.Step {
+  margin: 1em 0;
+}
+
+.Step-indicator, .Step-label {
+  display:inline-block;
+  box-sizing: border-box;
+  height: 1.25em;
+}
+
+.Step-indicator {
+  width: 1.25em;
+  border: 0.0625em solid $link-not-available;
+  border-radius: 50%;
+
+  &.active {
+    background-color: $primary-color;
+  }
+
+}
+
+.Step-label {
+  margin-left: 1em;
+}
