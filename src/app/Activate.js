@@ -58,6 +58,7 @@ class Activate extends React.Component {
           <TextField
             floatingLabelText="Device ID"
             value={this.state.Device} onChange={this.handleIDChange}
+            disabled
           />
           <TextField
             floatingLabelText="Owner ID"

@@ -3,6 +3,7 @@ Notary Dapp TODO
 - Remove global variables
 - Clean code
 - Add the ability to add more than one key for registring
+- Add OwnerID lookup table so that two won't be the same
 
 - Use Bignumber Library (OK)
 - Get rid of the login (OK)

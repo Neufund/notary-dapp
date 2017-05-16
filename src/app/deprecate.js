@@ -1,62 +1,112 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import IconButton from 'material-ui/IconButton';
+import Delete from 'material-ui/svg-icons/action/delete';
 import Headline from '../ui/Headline';
 import cms from '../cms';
 
 
 import nano2 from '../images/nano2.png';
-import { contract } from '../web3';
-
+import { toPromise, toPromiseNoError } from '../utils';
+import { ledger, contract } from '../web3';
+import ledgerLoginProvider from '../ledgerLoginProvider';
 import history from '../history';
 
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { User: '', DeviceID: window.deviceID };
-    this.handleIDChange = this.handleIDChange.bind(this);
-    this.handleRegister = this.handleRegister.bind(this);
-  }
-  handleIDChange(event) {
-    this.setState({ DeviceID: event.target.value });
-  }
-  handleRegister() {
-    const DeviceID = this.state.DeviceID;
+    this.handleDepricate = this.handleDepricate.bind(this);
+    this.askForAccountConfirmation = true;
+    this.state = {
+      DeviceID: window.deviceID ,
+      DisableButton: true,
+      browserSupported: true,
+      oldEthereumApp: false,
+      last: '',
+      addrs:'',};
+    if(this.state.DeviceID == null)
+    history.push('/');
+    if (contract == undefined || contract == null) {
+      console.log("Contract Not Deployed");
+      history.push('/');
+    }
 
-    if (contract !== undefined || contract !== null) {
-
+  }
+  async componentDidMount() {
+    await toPromiseNoError(this.setState.bind(this), { browserSupported: ledger.isU2FSupported });
+    await ledgerLoginProvider.waitUntilConnected();
+    await toPromiseNoError(this.setState.bind(this), { oldEthereumApp: ledgerLoginProvider.versionIsSupported });
+    this.onLedgerConnected();
+    ledgerLoginProvider.onDisconnect(() => {
       contract.deployed().then((instance) => {
         console.log(instance);
-        return instance.deprecate(DeviceID,{from: '0xf666111c610ff3f27d22452320f89178ef8979eb'});
+        return instance.isNotary.call(this.state.addrs);
+      }).then((suc) => {
+        if(suc == true)
+          this.setState({DisableButton: true})
+          window.location.reload();
+        console.log(suc);
+      }).catch((err) => {
+        console.log(err);
+      });
+        });
+  }
+  async onLedgerConnected() {
+    console.log('Nano Public key');
+    await this.getAccount();
+  }
+
+  async getAccount() {
+    ledgerLoginProvider.stop();
+    try {
+    //  const test = this.state.addrs;
+    console.log(this.askForAccountConfirmation);
+      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation])});
+      console.log(this.state.addrs);
+      if (this.askForAccountConfirmation) {
+        ledgerLoginProvider.start();
+      }
+      contract.deployed().then((instance) => {
+        console.log(instance);
+        return instance.isNotary.call(this.state.addrs);
+      }).then((suc) => {
+        if(suc == true)
+          this.setState({DisableButton: false})
+        console.log(suc);
+      }).catch((err) => {
+        console.log(err);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  handleDepricate() {
+      contract.deployed().then((instance) => {
+        console.log(instance);
+        return instance.deprecate(this.state.DeviceID,{from: '0xf666111c610ff3f27d22452320f89178ef8979eb'});
       }).then((suc) => {
         console.log(suc);
         history.push('/');
-      //  to be removed after hot reloading is enabled
       }).catch((err) => {
         console.log(err);
         history.push('/');
-      //  window.location.reload();
       });
-    } else {
-      console.info('Contract is not deployed');
-    }
   }
 
   render() {
     return (
       <div>
-        <img src={nano2} alt="nano2" width="350" />
-        <div className="secondary-info">Serial number is engraved Number</div>
+         <div className="secondary-info">Please plug the Notary Nano to continue</div>
         <form>
           <TextField
             floatingLabelText="Device ID"
             defaultValue={window.deviceID}
-            onChange={this.handleIDChange}
+            disabled
           />
+        <IconButton  onClick={() => this.handleDepricate()} disabled={this.state.DisableButton} ><Delete /></IconButton>
         </form>
-        <RaisedButton label="Deprecate"  onClick={this.handleRegister} />
       </div>
     );
   }
@@ -66,7 +116,7 @@ export default () => cms(__filename)(
 
   <div className="App-content">
     <Headline text="Welcome Mr.Notary man" />
-    <div className="secondary-info">Please enter the Nano serial Number</div>
+    <div className="secondary-info">You are DEPRECATING! the Nano. this action can't be reverserd</div>
     <Transfer />
 
   </div>,

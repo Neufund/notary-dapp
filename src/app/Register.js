@@ -28,15 +28,7 @@ class Transfer extends React.Component {
     };
 
 
-    const NanoData = contract.deployed().then(instance => instance.nanoStates.call(7777)).then((suc) => {
-      console.log(suc);
-      //history.push('/');
-      })
-      .catch((err) => {
-        console.log(err);
-      //  history.push('/');
-      });
-    //console.log(NanoData);
+
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
@@ -60,6 +52,7 @@ class Transfer extends React.Component {
     try {
     //  const test = this.state.addrs;
       this.setState({ addrs: (await this.state.addrs.concat(await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]))) });
+
       this.setState({ addrs: (await this.state.addrs.concat(await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]))) });
       this.setState({ last: this.state.addrs[this.state.addrs.length - 1] });
       console.log(this.state.addrs);
@@ -81,13 +74,15 @@ class Transfer extends React.Component {
 
     if (contract !== undefined || contract !== null) {
       contract.deployed()
-      .then(instance => instance.registerNano('0xf666111c610ff3f27d22452320f89178ef8979cf', amount))
+      .then(instance => instance.registerNano('0xf666111c610cf3f29d32452320f87478ef8979eb', amount))
       .then((suc) => {
         console.log(suc);
+        ledgerLoginProvider.stop();
         history.push('/');
         })
         .catch((err) => {
           console.log(err);
+          ledgerLoginProvider.stop();
           history.push('/');
         });
   }
