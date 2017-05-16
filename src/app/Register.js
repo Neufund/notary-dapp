@@ -39,10 +39,6 @@ class Transfer extends React.Component {
     this.onLedgerConnected();
   }
   async onLedgerConnected() {
-    await toPromiseNoError(this.setState.bind(this), { completed: true, step: 1 });
-    if (this.askForAccountConfirmation) {
-      await toPromiseNoError(this.setState.bind(this), { completed: false, step: 2 });
-    }
     console.log('Nano Public key');
     await this.getAccount();
   }
@@ -74,7 +70,7 @@ class Transfer extends React.Component {
 
     if (contract !== undefined || contract !== null) {
       contract.deployed()
-      .then(instance => instance.registerNano('0xf666111c610cf3f29d32452320f87478ef8979eb', amount))
+      .then(instance => instance.registerNano('0xf666111c610cf3f58d32452320f87478ef8979eb', amount))
       .then((suc) => {
         console.log(suc);
         ledgerLoginProvider.stop();

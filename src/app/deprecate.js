@@ -84,8 +84,8 @@ class Transfer extends React.Component {
   }
   handleDepricate() {
       contract.deployed().then((instance) => {
-        console.log(instance);
-        return instance.deprecate(this.state.DeviceID,{from: '0xf666111c610ff3f27d22452320f89178ef8979eb'});
+        console.log(this.state.addrs);
+        return instance.deprecate(this.state.DeviceID,{from: this.state.addrs[0]});
       }).then((suc) => {
         console.log(suc);
         history.push('/');
