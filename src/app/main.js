@@ -17,7 +17,6 @@ let TransPromise;
 
 function handleActivate(dev) {
   window.deviceID = dev;
-  console.log(dev);
   history.push('/activate');
 }
 
@@ -49,10 +48,6 @@ class Transfer extends React.Component {
 
   async componentDidMount() {
     // wait for transactions from web3
-    console.log(contract);
-
-
-
     const instance = await contract.deployed();
     const list = (await TransPromise)
       .filter(result => result.event === 'DeviceRegistered')
@@ -84,7 +79,6 @@ class Transfer extends React.Component {
   }
   handleDeprecate(dev) {
     window.deviceID = dev;
-    console.log(dev);
     history.push('/deprecate');
   }
 

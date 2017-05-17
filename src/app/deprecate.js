@@ -34,12 +34,14 @@ class Transfer extends React.Component {
     }
 
   }
+
   async componentDidMount() {
     await toPromiseNoError(this.setState.bind(this), { browserSupported: ledger.isU2FSupported });
     await ledgerLoginProvider.waitUntilConnected();
     await toPromiseNoError(this.setState.bind(this), { oldEthereumApp: ledgerLoginProvider.versionIsSupported });
     this.onLedgerConnected();
     ledgerLoginProvider.onDisconnect(() => {
+
       contract.deployed().then((instance) => {
         console.log(instance);
         return instance.isNotary.call(this.state.addrs);
@@ -63,7 +65,7 @@ class Transfer extends React.Component {
     try {
     //  const test = this.state.addrs;
     console.log(this.askForAccountConfirmation);
-      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation])});
+      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [false])});
       console.log(this.state.addrs);
       if (this.askForAccountConfirmation) {
         ledgerLoginProvider.start();

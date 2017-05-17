@@ -4,7 +4,6 @@ import Add from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
 
 import Headline from '../ui/Headline';
-import './Register.scss';
 import cms from '../cms';
 
 import history from '../history';
@@ -12,31 +11,54 @@ import history from '../history';
 import { toPromise, toPromiseNoError } from '../utils';
 import { ledger, contract } from '../web3';
 import ledgerLoginProvider from '../ledgerLoginProvider';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.askForAccountConfirmation = true;
-    this.state = {
-      DeviceID: [],
-      browserSupported: true,
-      oldEthereumApp: false,
-      addrs: [],
-      last: '',
-    };
-
-
-
     this.handleIDChange = this.handleIDChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
+    this.askForAccountConfirmation = true;
+    this.state = {
+      DeviceID: '',
+      browserSupported: true,
+      oldEthereumApp: false,
+      addrs: '',
+      DisableButton: true,
+    };
+
+    if (contract == undefined || contract == null)
+          history.push('/');
+
   }
+
   async componentDidMount() {
+    this.setState({Nano: cookies.get('Address')});
+    console.log(this.state.Nano);
     await toPromiseNoError(this.setState.bind(this), { browserSupported: ledger.isU2FSupported });
     await ledgerLoginProvider.waitUntilConnected();
     await toPromiseNoError(this.setState.bind(this), { oldEthereumApp: ledgerLoginProvider.versionIsSupported });
+    console.log("there seems to be a problem");
     this.onLedgerConnected();
+    ledgerLoginProvider.onDisconnect(() => {
+      window.location.reload();
+      contract.deployed().then((instance) => {
+
+        return instance.isNotary.call(this.state.addrs);
+      }).then((suc) => {
+        if(suc == true)
+        {
+          this.setState({DisableButton: true})
+        }
+        console.log(suc);
+      }).catch((err) => {
+        console.log(err);
+      });
+        });
   }
   async onLedgerConnected() {
     console.log('Nano Public key');
@@ -44,23 +66,40 @@ class Transfer extends React.Component {
   }
 
   async getAccount() {
-    ledgerLoginProvider.stop();
+    //ledgerLoginProvider.stop();
     try {
     //  const test = this.state.addrs;
-      this.setState({ addrs: (await this.state.addrs.concat(await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]))) });
-
-      this.setState({ addrs: (await this.state.addrs.concat(await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]))) });
-      this.setState({ last: this.state.addrs[this.state.addrs.length - 1] });
+    console.log(this.askForAccountConfirmation);
+      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation])});
       console.log(this.state.addrs);
-      if (this.askForAccountConfirmation) {
-        ledgerLoginProvider.start();
-      }
-        // START FROM HERE!!
+
+      contract.deployed().then((instance) => {
+        console.log(instance);
+        return instance.isNotary.call(this.state.addrs);
+      }).then((suc) => {
+        const cookies = new Cookies();
+
+        if(suc == true)
+        {
+          //Incase the Notary ledger was plugged before!
+            if(this.state.Nano == '')
+            history.push('/');
+            this.setState({DisableButton: false});
+        }
+        else
+        {
+            cookies.set('Address', this.state.addrs, { path: '/' });
+            this.setState({Nano: cookies.get('Address'), addrs: ''});
+        //    window.location.reload();
+        }
+        console.log(suc);
+      }).catch((err) => {
+        console.log(err);
+      });
     } catch (error) {
       console.log(error);
     }
   }
-
   async handleIDChange(event) {
     this.setState({ DeviceID: event.target.value });
   }
@@ -68,9 +107,8 @@ class Transfer extends React.Component {
   async handleRegister() {
     const amount = this.state.DeviceID;
 
-    if (contract !== undefined || contract !== null) {
       contract.deployed()
-      .then(instance => instance.registerNano('0xf666111c610cf3f58d32452320f87478ef8979eb', amount))
+      .then(instance => instance.registerNano(this.state.Nano, amount))
       .then((suc) => {
         console.log(suc);
         ledgerLoginProvider.stop();
@@ -79,25 +117,19 @@ class Transfer extends React.Component {
         .catch((err) => {
           console.log(err);
           ledgerLoginProvider.stop();
-          history.push('/');
         });
-  }
+
 }
-
-
-  async handleRegister2() {
-    console.log('Its me');
-  }
 
 
   render() {
     return (
       <div>
-        {this.state.addrs.map(test => test)}
+        {this.state.addrs}
         <form>
           <TextField
             floatingLabelText="Public key"
-            value={this.state.last}
+            value={this.state.Nano}
             style={{ width: 400 }}
             disabled
           />
@@ -107,7 +139,7 @@ class Transfer extends React.Component {
             onChange={this.handleIDChange}
           />
         </form>
-        <IconButton onClick={this.handleRegister}><Add /></IconButton>
+        <IconButton onClick={this.handleRegister} disabled={this.state.DisableButton}><Add /></IconButton>
       </div>
     );
   }

@@ -35,8 +35,8 @@ const initWeb3 = async function () {
   NeukeyNotary.defaults({
     from: '0xf666111c610ff3f27d22452320f89178ef8979eb',
   });
-  // Only once to set the notary
-//  NeukeyNotary.deployed().then(instance => instance.setNotary('0xf666111c610ff3f27d22452320f89178ef8979eb'));
+//   Only once to set the notary
+  // NeukeyNotary.deployed().then(instance => instance.setNotary('0xf666111c610ff3f27d22452320f89178ef8979eb'));
 };
 
 const exportObject = {
