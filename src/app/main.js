@@ -63,10 +63,8 @@ class Transfer extends React.Component {
         });
       },
     );
-
     this.setState({ list: (await Promise.all(list)).filter(device => !device.deprecated) });
-
-}
+  }
 
   handleRegister() {
     history.push('/Register');
