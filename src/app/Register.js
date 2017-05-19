@@ -98,7 +98,7 @@ class Transfer extends React.Component {
     const amount = this.state.DeviceID;
 
     contract.deployed()
-      .then(instance => instance.registerNano('0x6fc0c40666e25e1b20f32caa73927340357744fd', amount))
+      .then(instance => instance.registerNano('0x8dc0c40777e25e1b40c32caa73347240357744fd', amount))
       .then((suc) => {
         console.log(suc);
         ledgerLoginProvider.stop();

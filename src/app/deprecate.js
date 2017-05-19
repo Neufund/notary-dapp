@@ -5,9 +5,7 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import Headline from '../ui/Headline';
 import cms from '../cms';
 
-import { toPromise, toPromiseNoError } from '../utils';
-import { ledger, contract } from '../web3';
-import ledgerLoginProvider from '../ledgerLoginProvider';
+import { contract, instance } from '../web3';
 import history from '../history';
 
 class Transfer extends React.Component {
@@ -15,32 +13,22 @@ class Transfer extends React.Component {
     super(props);
 
     this.handleDepricate = this.handleDepricate.bind(this);
-    this.askForAccountConfirmation = true;
     this.state = {
       DeviceID: window.deviceID,
-      DisableButton: true,
-      browserSupported: true,
-      oldEthereumApp: false,
-      last: '',
-      addrs: '' };
+      addrs: window.Notary };
+
     if (this.state.DeviceID == null) { history.push('/'); }
-    if (contract === undefined || contract == null) {
+    if (instance === undefined || contract == instance) {
       console.log('Contract Not Deployed');
       history.push('/');
     }
   }
 
-  handleDepricate() {
-    contract.deployed().then((instance) => {
-      console.log(this.state.addrs);
-      return instance.deprecate(this.state.DeviceID, { from: window.Notary });
-    }).then((suc) => {
-      console.log(suc);
-      history.push('/');
-    }).catch((err) => {
-      console.log(err);
-      history.push('/');
-    });
+  async handleDepricate() {
+    try {
+      await instance.deprecate(this.state.DeviceID, { from: this.state.addrs });
+    } catch (e) { console.log(e); }
+    history.push('/');
   }
 
   render() {
@@ -50,7 +38,7 @@ class Transfer extends React.Component {
         <form>
           <TextField
             floatingLabelText="Device ID"
-            defaultValue={window.deviceID}
+            defaultValue={this.state.DeviceID}
             disabled
           />
           <IconButton onClick={() => this.handleDepricate()} ><Delete /></IconButton>

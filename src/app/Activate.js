@@ -5,45 +5,34 @@ import TextField from 'material-ui/TextField';
 import Headline from '../ui/Headline';
 import cms from '../cms';
 import history from '../history';
-import { contract } from '../web3';
+import { contract, instance } from '../web3';
 
 
 class Activate extends React.Component {
   constructor(props) {
     super(props);
+    this.handleOwnerChange = this.handleOwnerChange.bind(this);
+    this.handleActivate = this.handleActivate.bind(this);
 
-    this.askForAccountConfirmation = true;
-    this.state = { Owner: '',
+    this.state = {
+      Owner: '',
       deviceID: window.deviceID,
-      addrs: '',
-      last: '',
+      addrs: window.Notary,
     };
 
     if (this.state.deviceID == null) { history.push('/'); }
     if (contract == undefined || contract == null) { history.push('/'); }
     if (window.Notary == undefined) { history.push('/'); }
-    this.handleOwnerChange = this.handleOwnerChange.bind(this);
-    this.handleActivate = this.handleActivate.bind(this);
   }
 
 
-  handleOwnerChange(event) {
-    this.setState({ Owner: event.target.value });
-  }
+  handleOwnerChange(event) { this.setState({ Owner: event.target.value }); }
 
-  handleActivate() {
-    // for some reason state is not defined in the contract
-    const addrs = this.state.addrs[0];
-    const deviceID = this.state.deviceID;
-    const Owner = this.state.Owner;
-    contract.deployed().then(instance => instance.activateNano(deviceID, Owner, { from: window.Notary })).then((suc) => {
-      console.log(suc);
-      history.push('/');
-    }).catch((err) => {
-      console.log(err);
-      history.push('/');
-   // window.location.reload();
-    });
+  async handleActivate() {
+    try {
+      await instance.activateNano(this.state.deviceID, this.state.Owner, { from: this.state.addrs });
+    } catch (e) { console.log(e); }
+    history.push('/');
   }
 
   render() {
@@ -61,7 +50,6 @@ class Activate extends React.Component {
             value={this.state.Owner} onChange={this.handleOwnerChange}
           />
           <IconButton onClick={() => this.handleActivate()}> <Add /></IconButton>
-
         </form>
       </div>
     );
@@ -72,8 +60,7 @@ export default () => cms(__filename)(
 
   <div className="App-content">
     <Headline text="Welcome Mr.Notary man" />
-    <div className="secondary-info">After handing the owner thier Nano</div>
+    <div className="secondary-info">After handing the owner their Nano</div>
     <Activate />
-
   </div>,
     );

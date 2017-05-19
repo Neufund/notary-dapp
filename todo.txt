@@ -2,7 +2,7 @@ Notary Dapp TODO
 
 - Remove global variables
 - Clean code
-- Add the ability to add more than one key for registring
+- Add the ability to add more than one key for register
 - Add OwnerID lookup table so that two won't be the same
 
 - Use Bignumber Library (OK)
@@ -10,7 +10,7 @@ Notary Dapp TODO
 - Change the Table to add Pubkey , ownerId (ok)
 - Use Web3-provider-engine (OK)
 - Connect contracts with Web3-provider-engine (ok)
-- Use Notary Ledger
+- Use Notary Ledger (ok)
 
 
-//Issue: npm install doesn't work/ temporary solution use node_modules from a previous commit
+//Issue: npm install doesn't work/ temporary solution use node_modules from a previous commit (solved)

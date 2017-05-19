@@ -10,6 +10,7 @@ import NeukeyNotaryArtifacts from '../contracts-private/build/contracts/NeukeyNo
 let ledger = null;
 let NeukeyNotary = null;
 const NODE_URL = '/api/';
+let instance = null;
 
 const initWeb3 = async function () {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask/Parity)
@@ -35,6 +36,7 @@ const initWeb3 = async function () {
   NeukeyNotary.defaults({
     from: '0xf666111c610ff3f27d22452320f89178ef8979eb',
   });
+  instance = await NeukeyNotary.deployed();
 //   Only once to set the notary
 //  NeukeyNotary.deployed().then(instance => instance.setNotary('0xf666111c610ff3f27d22452320f89178ef8979eb'));
 };
@@ -49,6 +51,9 @@ const exportObject = {
   },
   get contract() {
     return NeukeyNotary;
+  },
+  get instance() {
+    return instance;
   },
 };
 
