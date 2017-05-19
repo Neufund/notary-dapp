@@ -31,34 +31,28 @@ class Transfer extends React.Component {
       DisableButton: true,
     };
 
-    if (contract == undefined || contract == null)
-          history.push('/');
-
+    if (contract == undefined || contract == null) { history.push('/'); }
   }
 
   async componentDidMount() {
-    this.setState({Nano: cookies.get('Address')});
+    this.setState({ Nano: cookies.get('Address') });
     console.log(this.state.Nano);
     await toPromiseNoError(this.setState.bind(this), { browserSupported: ledger.isU2FSupported });
     await ledgerLoginProvider.waitUntilConnected();
     await toPromiseNoError(this.setState.bind(this), { oldEthereumApp: ledgerLoginProvider.versionIsSupported });
-    console.log("there seems to be a problem");
+    console.log('there seems to be a problem');
     this.onLedgerConnected();
     ledgerLoginProvider.onDisconnect(() => {
       window.location.reload();
-      contract.deployed().then((instance) => {
-
-        return instance.isNotary.call(this.state.addrs);
-      }).then((suc) => {
-        if(suc == true)
-        {
-          this.setState({DisableButton: true})
+      contract.deployed().then(instance => instance.isNotary.call(this.state.addrs)).then((suc) => {
+        if (suc == true) {
+          this.setState({ DisableButton: true });
         }
         console.log(suc);
       }).catch((err) => {
         console.log(err);
       });
-        });
+    });
   }
   async onLedgerConnected() {
     console.log('Nano Public key');
@@ -66,11 +60,11 @@ class Transfer extends React.Component {
   }
 
   async getAccount() {
-    //ledgerLoginProvider.stop();
+    // ledgerLoginProvider.stop();
     try {
     //  const test = this.state.addrs;
-    console.log(this.askForAccountConfirmation);
-      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation])});
+      console.log(this.askForAccountConfirmation);
+      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [this.askForAccountConfirmation]) });
       console.log(this.state.addrs);
 
       contract.deployed().then((instance) => {
@@ -79,17 +73,13 @@ class Transfer extends React.Component {
       }).then((suc) => {
         const cookies = new Cookies();
 
-        if(suc == true)
-        {
-          //Incase the Notary ledger was plugged before!
-            if(this.state.Nano == '')
-            history.push('/');
-            this.setState({DisableButton: false});
-        }
-        else
-        {
-            cookies.set('Address', this.state.addrs, { path: '/' });
-            this.setState({Nano: cookies.get('Address'), addrs: ''});
+        if (suc == true) {
+          // Incase the Notary ledger was plugged before!
+          if (this.state.Nano == '') { history.push('/'); }
+          this.setState({ DisableButton: false });
+        } else {
+          cookies.set('Address', this.state.addrs, { path: '/' });
+          this.setState({ Nano: cookies.get('Address'), addrs: '' });
         //    window.location.reload();
         }
         console.log(suc);
@@ -107,19 +97,18 @@ class Transfer extends React.Component {
   async handleRegister() {
     const amount = this.state.DeviceID;
 
-      contract.deployed()
-      .then(instance => instance.registerNano(this.state.Nano, amount))
+    contract.deployed()
+      .then(instance => instance.registerNano('0x6fc0c40666e25e1b20f32caa73927340357744fd', amount))
       .then((suc) => {
         console.log(suc);
         ledgerLoginProvider.stop();
         history.push('/');
-        })
+      })
         .catch((err) => {
           console.log(err);
           ledgerLoginProvider.stop();
         });
-
-}
+  }
 
 
   render() {

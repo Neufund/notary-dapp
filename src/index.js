@@ -1,3 +1,5 @@
+// https://github.com/reactjs/react-router-redux/issues/348
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router';
@@ -6,7 +8,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
-// https://github.com/reactjs/react-router-redux/issues/348
 import history from './history';
 import App from './app/App';
 

@@ -1,10 +1,10 @@
 import LedgerWalletSubproviderFactory from 'ledger-wallet-provider';
 import Web3 from 'web3';
 import contract from 'truffle-contract';
-import NeukeyNotaryArtifacts from '../contracts-private/build/contracts/NeukeyNotary.json';
 import ProviderEngine from 'web3-provider-engine';
 import RpcSubprovider from 'web3-provider-engine/subproviders/rpc';
-import { toPromise } from './utils';
+
+import NeukeyNotaryArtifacts from '../contracts-private/build/contracts/NeukeyNotary.json';
 
 
 let ledger = null;
@@ -36,7 +36,7 @@ const initWeb3 = async function () {
     from: '0xf666111c610ff3f27d22452320f89178ef8979eb',
   });
 //   Only once to set the notary
-  // NeukeyNotary.deployed().then(instance => instance.setNotary('0xf666111c610ff3f27d22452320f89178ef8979eb'));
+//  NeukeyNotary.deployed().then(instance => instance.setNotary('0xf666111c610ff3f27d22452320f89178ef8979eb'));
 };
 
 const exportObject = {

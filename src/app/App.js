@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.scss';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import './App.scss';
 import Header from '../ui/header/Index';
 import Footer from '../ui/footer/Index';
 import muiTheme from '../muiTheme';

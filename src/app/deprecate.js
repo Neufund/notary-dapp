@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Headline from '../ui/Headline';
@@ -25,62 +24,16 @@ class Transfer extends React.Component {
       last: '',
       addrs: '' };
     if (this.state.DeviceID == null) { history.push('/'); }
-    if (contract == undefined || contract == null) {
+    if (contract === undefined || contract == null) {
       console.log('Contract Not Deployed');
       history.push('/');
     }
   }
 
-  async componentDidMount() {
-    await toPromiseNoError(this.setState.bind(this), { browserSupported: ledger.isU2FSupported });
-    await ledgerLoginProvider.waitUntilConnected();
-    await toPromiseNoError(this.setState.bind(this), { oldEthereumApp: ledgerLoginProvider.versionIsSupported });
-    this.onLedgerConnected();
-    ledgerLoginProvider.onDisconnect(() => {
-      contract.deployed().then((instance) => {
-        console.log(instance);
-        return instance.isNotary.call(this.state.addrs);
-      }).then((suc) => {
-        if (suc == true) { this.setState({ DisableButton: true }); }
-        window.location.reload();
-        console.log(suc);
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-  }
-  async onLedgerConnected() {
-    console.log('Nano Public key');
-    await this.getAccount();
-  }
-
-  async getAccount() {
-    ledgerLoginProvider.stop();
-    try {
-    //  const test = this.state.addrs;
-      console.log(this.askForAccountConfirmation);
-      this.setState({ addrs: await toPromise(ledger.getAccounts, [], [false]) });
-      console.log(this.state.addrs);
-      if (this.askForAccountConfirmation) {
-        ledgerLoginProvider.start();
-      }
-      contract.deployed().then((instance) => {
-        console.log(instance);
-        return instance.isNotary.call(this.state.addrs);
-      }).then((suc) => {
-        if (suc == true) { this.setState({ DisableButton: false }); }
-        console.log(suc);
-      }).catch((err) => {
-        console.log(err);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
   handleDepricate() {
     contract.deployed().then((instance) => {
       console.log(this.state.addrs);
-      return instance.deprecate(this.state.DeviceID, { from: this.state.addrs[0] });
+      return instance.deprecate(this.state.DeviceID, { from: window.Notary });
     }).then((suc) => {
       console.log(suc);
       history.push('/');
@@ -100,7 +53,7 @@ class Transfer extends React.Component {
             defaultValue={window.deviceID}
             disabled
           />
-          <IconButton onClick={() => this.handleDepricate()} disabled={this.state.DisableButton} ><Delete /></IconButton>
+          <IconButton onClick={() => this.handleDepricate()} ><Delete /></IconButton>
         </form>
       </div>
     );
